@@ -1,2 +1,2 @@
 # RailYou
-a universty project
+rail who? ;)
