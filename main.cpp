@@ -241,7 +241,7 @@ int main() {
 
         case 4: {
             system("CLS");
-            cout << "RailYou'u kullandiginiz icin tesekkur ederiz. Iyi gunler dileriz!" << endl;
+            cout << "RailYou'yu kullandiginiz icin tesekkur ederiz. Iyi gunler dileriz!" << endl;
             break;
         }
         default: {
