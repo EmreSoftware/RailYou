@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib> // Ekran temizlemek için
 #include <ctime>   // Rastgele sayı üretmek için
+#include <algorithm>
 
 using namespace std;
 
@@ -158,12 +159,34 @@ int main() {
             cin >> koltukNumarasi;
 
             string ad;
+            string yasString; // Yaş için string olarak alınacak
             int yas;
             string cinsiyet;
+            bool dogruYas = false;
+
             cout << "Adinizi girin: ";
             cin >> ad;
-            cout << "Yasinizi girin: ";
-            cin >> yas;
+
+            // Doğru yaş girişi yapılıncaya kadar döngüyü devam ettir
+            while (!dogruYas) {
+                cout << "Yasinizi girin: ";
+                cin >> yasString;
+
+                // Yaş girişinin doğru olup olmadığını kontrol et
+                for (char c : yasString) {
+                    if (!isdigit(c)) { // Eğer girdide rakam dışında bir karakter varsa
+                        cout << "Yas sadece rakam iceriyor olmalidir. Lutfen tekrar deneyin." << endl;
+                        break;
+                    }
+                }
+
+                // Eğer girişte sadece rakamlar varsa, stringi integera çevir
+                if (all_of(yasString.begin(), yasString.end(), ::isdigit)) {
+                    yas = stoi(yasString);
+                    dogruYas = true;
+                }
+            }
+
             cout << "Cinsiyetinizi girin (Erkek/Kadin): ";
             cin >> cinsiyet;
 
@@ -179,6 +202,7 @@ int main() {
             cout << endl;
             break;
         }
+
         case 3: {
             system("CLS");
             // Belirli bir trenin belirli bir koltuğunun sahibini sorgula
