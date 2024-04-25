@@ -1,4 +1,3 @@
-// test
 #include <iostream>
 #include <string>
 #include <cstdlib> // Ekran temizlemek için
@@ -74,11 +73,16 @@ public:
         int koltukIndeksi = (koltukNumarasi - 1) % koltukSayisi;
 
         if (koltukNumarasi < 1 || koltukNumarasi > vagonSayisi * koltukSayisi) {
-            return ""; // Geçersiz koltuk numarasi
+            return "Gecersiz koltuk numarasi.";
         }
-        return koltukBilgileri[vagonIndeksi][koltukIndeksi][0] + " - " +
-               koltukBilgileri[vagonIndeksi][koltukIndeksi][1] + " - " +
-               koltukBilgileri[vagonIndeksi][koltukIndeksi][2];
+        else if (koltukBilgileri[vagonIndeksi][koltukIndeksi][0] == "") {
+            return "Koltuk Sahipsizdir";
+        }
+        else {
+            return koltukBilgileri[vagonIndeksi][koltukIndeksi][0] + " - " +
+                koltukBilgileri[vagonIndeksi][koltukIndeksi][1] + " - " +
+                koltukBilgileri[vagonIndeksi][koltukIndeksi][2];
+        }
     }
 
     void ekranTemizle() const {
@@ -110,7 +114,7 @@ void ekranTemizle() {
 int main() {
 
     Tren aktifTrenler[3]; // En fazla 3 tren
-    string seferAdlari[] = {"Ankara-Kocaeli", "Ankara-Eskisehir", "Ankara-Sivas", "Ankara-Istanbul", "Ankara-Antalya"};
+    string seferAdlari[] = { "Ankara-Kocaeli", "Ankara-Eskisehir", "Ankara-Sivas", "Ankara-Istanbul", "Ankara-Antalya" };
     srand(time(nullptr)); // Rastgelelik için zamanı kullan
 
     // Rastgele sefer adlarını belirle
@@ -120,7 +124,7 @@ int main() {
         aktifTrenler[i] = Tren("Tren " + to_string(i + 1), seciliSeferler[i]); // Trenleri oluştururken sefer adını ekleyin
     }
 
-    cout << "RailYou'a Hosgeldiniz!" << endl;
+    cout << "RailYou'ya Hosgeldiniz!" << endl;
 
     int secim;
 
@@ -130,92 +134,101 @@ int main() {
         cout << endl;
 
         switch (secim) {
-            case 1: {
-                // Olusturulan aktif trenleri goster
-                cout << "Aktif trenler:" << endl;
-                for (int i = 0; i < 3; ++i) {
-                    cout << seciliSeferler[i] << ": " << endl;
-                    aktifTrenler[i].bosKoltuklariGoster();
-                    cout << endl;
-                }
+        case 1: {
+            system("CLS");
+            // Olusturulan aktif trenleri goster
+            cout << "Aktif trenler:" << endl;
+            for (int i = 0; i < 3; ++i) {
+                cout << seciliSeferler[i] << ": " << endl;
+                aktifTrenler[i].bosKoltuklariGoster();
                 cout << endl;
-                break;
             }
-            case 2: {
-                // Belirli bir tren için koltuk rezervasyonu yap
-                int trenIndeksi;
-                cout << "Rezervasyon yapmak istediginiz trenin indeksini girin (1-3): ";
-                cin >> trenIndeksi;
-                --trenIndeksi; // Kullanıcının girdiği indeks sıfırdan başladığı için bir azaltılır
+            cout << endl;
+            break;
+        }
+        case 2: {
+            // Belirli bir tren için koltuk rezervasyonu yap
+            int trenIndeksi;
+            cout << "Rezervasyon yapmak istediginiz trenin numarasini girin (1-3): ";
+            cin >> trenIndeksi;
+            --trenIndeksi; // Kullanıcının girdiği indeks sıfırdan başladığı için bir azaltılır
 
-                int koltukNumarasi;
-                cout << "Rezervasyon yapmak istediginiz koltuk numarasini girin: ";
-                cin >> koltukNumarasi;
+            int koltukNumarasi;
+            cout << "Rezervasyon yapmak istediginiz koltuk numarasini girin: ";
+            cin >> koltukNumarasi;
 
-                string ad;
-                int yas;
-                string cinsiyet;
-                cout << "Adinizi girin: ";
-                cin >> ad;
-                cout << "Yasinizi girin: ";
-                cin >> yas;
-                cout << "Cinsiyetinizi girin (Erkek/Kadin): ";
-                cin >> cinsiyet;
+            string ad;
+            int yas;
+            string cinsiyet;
+            cout << "Adinizi girin: ";
+            cin >> ad;
+            cout << "Yasinizi girin: ";
+            cin >> yas;
+            cout << "Cinsiyetinizi girin (Erkek/Kadin): ";
+            cin >> cinsiyet;
 
-                // Rezervasyon yapılırken yaş ve cinsiyet bilgileri ekleniyor
-                if (aktifTrenler[trenIndeksi].koltukRezerveEt(koltukNumarasi, ad, yas, cinsiyet)) {
-                    cout << endl << "-----------------------------------------------------------------------";
-                    cout << endl << koltukNumarasi << ". koltuk " << aktifTrenler[trenIndeksi].seferAdiAl() << " treninde " << ad << " adina basariyla rezerve edildi." << endl;
+            // Rezervasyon yapılırken yaş ve cinsiyet bilgileri ekleniyor
+            if (aktifTrenler[trenIndeksi].koltukRezerveEt(koltukNumarasi, ad, yas, cinsiyet)) {
+                cout << endl << "-----------------------------------------------------------------------";
+                cout << endl << koltukNumarasi << ". koltuk " << aktifTrenler[trenIndeksi].seferAdiAl() << " treninde " << ad << " adina basariyla rezerve edildi." << endl;
+                cout << "-----------------------------------------------------------------------" << endl;
+            }
+            else {
+                cout << "Rezervasyon basarisiz oldu. Lutfen gecerli bir koltuk numarasi girin." << endl;
+            }
+            cout << endl;
+            break;
+        }
+        case 3: {
+            system("CLS");
+            // Belirli bir trenin belirli bir koltuğunun sahibini sorgula
+            int trenIndeksi;
+            cout << "Koltuk sahibini sorgulamak istediginiz trenin indeksini girin (1-3): ";
+            cin >> trenIndeksi;
+            --trenIndeksi; // Kullanıcının girdiği indeks sıfırdan başladığı için bir azaltılır
+
+            int koltukNumarasi;
+            cout << "Sorgulamak istediginiz koltuk numarasini girin: ";
+            cin >> koltukNumarasi;
+
+            if (koltukNumarasi >= 1 && koltukNumarasi <= Tren::vagonSayisi * Tren::koltukSayisi) {
+                string koltukSahibi = aktifTrenler[trenIndeksi].koltukSahibi(koltukNumarasi);
+                if (koltukSahibi == "Koltuk Sahipsizdir") {
+                    cout << endl << "-----------------------------------------------------------------------" << endl;
+                    cout << aktifTrenler[trenIndeksi].seferAdiAl() << " trenindeki " << koltukNumarasi << ". koltuk " << "Sahipsizdir" << endl;
+                    //cout << "Koltuk Sahipsizdir." << endl;
                     cout << "-----------------------------------------------------------------------" << endl;
-                } else {
-                    cout << "Rezervasyon basarisiz oldu. Lutfen gecerli bir koltuk numarasi girin." << endl;
                 }
-                cout << endl;
-                break;
-            }
-            case 3: {
-                // Belirli bir trenin belirli bir koltuğunun sahibini sorgula
-                int trenIndeksi;
-                cout << "Koltuk sahibini sorgulamak istediginiz trenin indeksini girin (1-3): ";
-                cin >> trenIndeksi;
-                --trenIndeksi; // Kullanıcının girdiği indeks sıfırdan başladığı için bir azaltılır
-
-                int koltukNumarasi;
-                cout << "Sorgulamak istediginiz koltuk numarasini girin: ";
-                cin >> koltukNumarasi;
-
-                if (koltukNumarasi >= 1 && koltukNumarasi <= Tren::vagonSayisi * Tren::koltukSayisi) {
-                    string koltukSahibi = aktifTrenler[trenIndeksi].koltukSahibi(koltukNumarasi);
-                    if (koltukSahibi != "") {
-                        cout << endl << "-----------------------------------------------------------------------" << endl;
-                        cout << koltukNumarasi << ". koltuk " << aktifTrenler[trenIndeksi].seferAdiAl() << " treninde " << koltukSahibi << " tarafindan rezerve edilmistir." << endl;
-                        cout << "-----------------------------------------------------------------------" << endl;
-                    } else {
-                        cout << "Belirtilen koltuk numarasi bos veya gecersiz." << endl;
-                    }
-                } else {
-                    cout << "Gecersiz koltuk numarasi. Lutfen tekrar deneyin." << endl;
+                else if (koltukSahibi != "") {
+                    cout << endl << "-----------------------------------------------------------------------" << endl;
+                    cout << koltukNumarasi << ". koltuk " << aktifTrenler[trenIndeksi].seferAdiAl() << " treninde " << koltukSahibi << " tarafindan rezerve edilmistir." << endl;
+                    cout << "-----------------------------------------------------------------------" << endl;
                 }
-                cout << endl;
-                break;
+                else {
+                    cout << "Belirtilen koltuk numarasi bos veya gecersiz." << endl;
+                }
             }
-            case 4: {
-                cout << "RailYou'u kullandiginiz icin tesekkur ederiz. Iyi gunler dileriz!" << endl;
-                break;
+            else {
+                cout << "Gecersiz koltuk numarasi. Lutfen tekrar deneyin." << endl;
             }
-            default: {
-                cout << "Gecersiz secim. Lutfen tekrar deneyin." << endl;
-            }
+            cout << endl;
+            break;
+        }
+
+        case 4: {
+            system("CLS");
+            cout << "RailYou'u kullandiginiz icin tesekkur ederiz. Iyi gunler dileriz!" << endl;
+            break;
+        }
+        default: {
+            cout << "Gecersiz secim. Lutfen tekrar deneyin." << endl;
+        }
         }
 
         // Ekranı temizleme sadece 2. ve 3. menü kullanıldığında yapılır
         if (secim == 2 || secim == 3) {
-            cout << "Ekrani temizlemek ister misiniz? (Evet icin E, Hayir icin H tusuna basin): ";
-            char temizleSecim;
-            cin >> temizleSecim;
-            if (temizleSecim == 'E' || temizleSecim == 'e') {
-                ekranTemizle();
-            }
+            system("pause");
+            system("CLS");
         }
 
     } while (secim != 4);
