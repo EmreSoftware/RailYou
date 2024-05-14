@@ -64,7 +64,7 @@ public:
     bool koltukRezerveEt(int koltukNumarasi, const string& ad, int yas, const string& cinsiyet) { // Koltuk rezervasyonu yapmak için
         int vagonIndeksi = (koltukNumarasi - 1) / koltukSayisi; // Koltuğun bulunduğu vagonun indeksi
         int koltukIndeksi = (koltukNumarasi - 1) % koltukSayisi; // Koltuğun bulunduğu sıranın indeksi
-        
+
         // Eğer koltuk numarası geçersizse veya koltuk doluysa
         if (koltukNumarasi < 1 || koltukNumarasi > vagonSayisi * koltukSayisi || koltukBilgileri[vagonIndeksi][koltukIndeksi][0] != "") {
             return false; // Rezervasyon başarısız
@@ -80,7 +80,7 @@ public:
         int koltukIndeksi = (koltukNumarasi - 1) % koltukSayisi; // Koltuğun bulunduğu sıranın indeksi
 
         // Eğer koltuk numarası geçersizse [1 ila 40 arasında değilse (vagon sayısı * koltuk sayisi -> 2*20 = 40)]
-        if (koltukNumarasi < 1 || koltukNumarasi > vagonSayisi * koltukSayisi) { 
+        if (koltukNumarasi < 1 || koltukNumarasi > vagonSayisi * koltukSayisi) {
             return "Gecersiz koltuk numarasi.";
         }
         else if (koltukBilgileri[vagonIndeksi][koltukIndeksi][0] == "") { // Eğer koltuk boşsa
@@ -88,9 +88,9 @@ public:
         }
         else {
             // Koltuk sahibinin bilgilerini döndür. Ad-Yaş-Cinsiyet
-            return koltukBilgileri[vagonIndeksi][koltukIndeksi][0] + " - " + 
+            return koltukBilgileri[vagonIndeksi][koltukIndeksi][0] + " - " +
                 koltukBilgileri[vagonIndeksi][koltukIndeksi][1] + " - " +
-                koltukBilgileri[vagonIndeksi][koltukIndeksi][2]; 
+                koltukBilgileri[vagonIndeksi][koltukIndeksi][2];
         }
     }
 
@@ -112,9 +112,17 @@ void menuGoster() { // Ana menüyü gösteren fonksiyon
     cout << "Seciminizi girin: "; // Kullanıcıdan seçim yapmasını istiyorum.
 }
 
+void ekranTemizle() { // Ekranı temizleme fonksiyonu
+#ifdef _WIN32 // Windows işletim sistemi için temizleme kodu
+    system("cls");
+#else // Diğer işletim sistemler için temizleme kodu
+    system("clear");
+#endif
+}
+
 int main() { // Ana fonksiyon
     Tren aktifTrenler[3]; // En fazla 3 tren oluşturuyoruz
-    
+
     // Tren sefer adları [Keyfimizce rastgele isimler verilmesi için 5 sefer adı]
     string seferAdlari[] = { "Ankara-Kocaeli", "Ankara-Eskisehir", "Ankara-Sivas", "Ankara-Istanbul", "Ankara-Antalya" };
     srand(time(nullptr)); // Rastgelelik için zamanı kullanıyorum
@@ -136,7 +144,7 @@ int main() { // Ana fonksiyon
         cout << endl;
 
         switch (secim) { // Kullanıcının seçimine göre işlem yapıyoruz [Switch Case ile]
-        
+
             case 1: { // Menü 1, Trenleri Gösterme Menüsü
             ekranTemizle(); // Ekranı temizleme
 
@@ -150,9 +158,9 @@ int main() { // Ana fonksiyon
             cout << endl;
             break;
         }
-            
+
         case 2: { // Menü 2, Rezervasyon menüsü
-            
+
             // Belirli bir tren için koltuk rezervasyonu yapmak adına:
             int trenIndeksi;
             cout << "Rezervasyon yapmak istediginiz trenin numarasini girin (1-3): "; // Kullanıcıdan tren numarası al
@@ -210,9 +218,9 @@ int main() { // Ana fonksiyon
             int trenIndeksi;
             cout << "Koltuk sahibini sorgulamak istediginiz trenin indeksini girin (1-3): "; // Kullanıcıdan tren numarası al
             cin >> trenIndeksi; // Kullanıcının girdiği tren numarasını al.
-            --trenIndeksi; 
+            --trenIndeksi;
             // Kullanıcının girdiği indeks sıfırdan başladığı için bir azaltılır [Tren 1 aslında indekste 0 olarak kayıtlı, bu yüzden 1 azaltılır]
-            
+
             int koltukNumarasi; // Koltuk numarası
             cout << "Sorgulamak istediginiz koltuk numarasini girin: "; // Kullanıcıdan koltuk numarası al
             cin >> koltukNumarasi;
